@@ -66,6 +66,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 .board-view {
+  background-color: #191515;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
