@@ -2,6 +2,10 @@
 
 > A Vue.js project
 
+## Demo
+
+click [here](https://sc-painter.netlify.com/) to see live example
+
 ## Build Setup
 
 ``` bash
