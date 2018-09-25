@@ -28,6 +28,7 @@
 </template>
 <script>
 import PaintingBoard from "@/components/PaintingBoard";
+const SHAPES = "shapes";
 
 export default {
   name: "BoardView",
@@ -40,14 +41,18 @@ export default {
     };
   },
   created() {
-    this.shapes = JSON.parse(localStorage.getItem("shapes")) || [];
+    // 每次加载页面读取存储信息
+    this.shapes = JSON.parse(localStorage.getItem(SHAPES)) || [];
   },
   methods: {
     clearBoard() {
       this.shapes = [];
     },
+    /**
+     * 存储形状状态
+     */
     saveBoard() {
-      localStorage.setItem("shapes", JSON.stringify(this.shapes));
+      localStorage.setItem(SHAPES, JSON.stringify(this.shapes));
       this.$message({
         showClose: true,
         message: "保存成功",

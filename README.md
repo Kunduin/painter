@@ -1,16 +1,28 @@
-# draw
+# Painter
 
-> A Vue.js project
+> A simple hand painted board by vue
 
 ## Demo
 
 click [here](https://sc-painter.netlify.com/) to see live example
 
+## Screen Shot
+
+![](screen-shot.png)
+
+## Features
+
+1. Saving to local (You can restore it next time you open your brower)
+2. Simple shapes identification
+
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 npm install
+
+# code style analysis
+npm run lint
 
 # serve with hot reload at localhost:8080
 npm run dev
@@ -21,5 +33,3 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 ```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).

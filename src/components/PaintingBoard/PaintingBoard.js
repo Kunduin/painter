@@ -1,17 +1,8 @@
 import { generateId } from "@/util/idGenerator";
-import {
-  findMaxX,
-  findMaxY,
-  findMiniX,
-  findMiniY,
-  getRangeOfXY
-} from "@/components/PaintingBoard/PathUtil";
-import { judgeShape } from "@/components/PaintingBoard/identifyShape";
+import { getRangeOfXY } from "@/components/PaintingBoard/utils/pathUtil";
+import { judgeShape } from "@/components/PaintingBoard/utils/identifyShape";
 import toMaterialStyle from "material-color-hash";
-import {
-  IDENTIFY_TEXT_BACKGROUND_COLOR,
-  IDENTIFY_TEXT_FONT_COLOR
-} from "@/components/PaintingBoard/paintStyle";
+import { paintEachShapes } from "@/components/PaintingBoard/utils/shapesPainter";
 
 export default class paintingBrush {
   shapes = [];
@@ -28,16 +19,25 @@ export default class paintingBrush {
     this.canvas = canvas.getContext("2d");
   }
 
+  /**
+   * 设置形状
+   * @param shapes
+   */
   setShapes = shapes => {
     this.shapes = shapes;
     this.repaintAllShapes();
   };
 
+  /**
+   * 获得形状
+   * @return {*[]}
+   */
   getShapes = () => {
     return this.shapes.slice(0);
   };
 
   /**
+   * 开始绘制图像
    * @public
    */
   startDrawAShape = ({ x, y }) => {
@@ -60,6 +60,7 @@ export default class paintingBrush {
   };
 
   /**
+   * 正在绘制图像
    * @public
    */
   keepDrawingAShape = ({ x, y }) => {
@@ -73,6 +74,7 @@ export default class paintingBrush {
   };
 
   /**
+   * 结束绘制形状
    * @public
    */
   endDrawAShape = () => {
@@ -80,11 +82,11 @@ export default class paintingBrush {
     canvas.closePath();
     canvas.restore();
     this.identifyTheFinalShape();
-    console.log(this.shapes);
     return this.shapes;
   };
 
   /**
+   * 选中图形
    * @public
    */
   hoverItems = ({ x, y }) => {
@@ -103,6 +105,7 @@ export default class paintingBrush {
   };
 
   /**
+   * 判读用户绘制图形
    * @private
    */
   identifyTheFinalShape = () => {
@@ -117,102 +120,26 @@ export default class paintingBrush {
       type,
       shapedPath
     });
-    console.log(type);
     this.repaintAllShapes();
   };
 
   /**
+   * 重绘所有图形
    * @private
    */
-  drawIdentifyRect = path => {
-    const maxX = findMaxX(path);
-    const miniX = findMiniX(path);
-    const maxY = findMaxY(path);
-    const miniY = findMiniY(path);
-    const canvas = this.canvas;
-    console.log(miniX, miniY, maxX, maxX);
-    canvas.strokeRect(miniX, miniY, maxX - miniX, maxY - miniY);
-  };
-
-  /**
-   * @private
-   */
-  drawUserHandDrawnShape = pathFunction => {};
-
-  /**
-   * @private
-   */
-  repaintAllShapes = (activeId = "") => {
+  repaintAllShapes = activeId => {
     this.cleanCanvas();
     const { canvas, shapes } = this;
     canvas.save();
     canvas.lineWidth = 3;
-
     shapes.forEach(item => {
-      const {
-        type,
-        strokeColor,
-        id,
-        shapedPath,
-        maxX,
-        miniX,
-        maxY,
-        miniY
-      } = item;
-      const middle = { x: (maxX + miniX) / 2, y: (maxY + miniY) / 2 };
-      canvas.strokeStyle = strokeColor;
-      if (activeId === id) {
-        canvas.strokeRect(
-          miniX - 10,
-          miniY - 10,
-          maxX - miniX + 20,
-          maxY - miniY + 20
-        );
-      }
-      if (type) {
-        if (type !== "圆形") {
-          canvas.beginPath();
-          canvas.moveTo(shapedPath[0].x, shapedPath[0].y);
-          for (let i = 1; i < shapedPath.length; i++) {
-            canvas.lineTo(shapedPath[i].x, shapedPath[i].y);
-          }
-        } else {
-          canvas.beginPath();
-          const ellipseX = middle.x;
-          const ellipseY = middle.y;
-          const radiusX = ellipseX - miniX;
-          const radiusY = ellipseY - miniY;
-          canvas.ellipse(
-            ellipseX,
-            ellipseY,
-            radiusX,
-            radiusY,
-            0,
-            0,
-            2 * Math.PI
-          );
-        }
-        canvas.closePath();
-        if (activeId === id) {
-          canvas.fillStyle = strokeColor;
-          canvas.fill();
-        } else {
-          canvas.stroke();
-        }
-
-        canvas.fillStyle = strokeColor;
-        canvas.fillRect(middle.x - 40, middle.y - 15, 80, 30);
-        canvas.fillStyle = IDENTIFY_TEXT_FONT_COLOR;
-        canvas.font = "20px arial";
-        canvas.textBaseline = "middle";
-        canvas.textAlign = "center";
-        canvas.fillText(type, middle.x, middle.y);
-      }
+      paintEachShapes(item, canvas, activeId);
     });
     canvas.restore();
   };
 
   /**
+   * 清空canvas区域
    * @private
    */
   cleanCanvas = () => {

@@ -1,3 +1,5 @@
+import { CYCLE } from "@/components/PaintingBoard/data/shapeType";
+
 export const judgeShape = path => {
   let result = [];
   if (path.length > 3) {
@@ -9,9 +11,7 @@ export const judgeShape = path => {
       const aY = center.y - begin.y;
       const bX = end.x - center.x;
       const bY = end.y - center.y;
-      let angle = 0;
-
-      angle = Math.atan2(bY, bX) - Math.atan2(aY, aX);
+      let angle = Math.atan2(bY, bX) - Math.atan2(aY, aX);
       if (angle > Math.PI) angle -= 2 * Math.PI;
       if (angle < -Math.PI) angle += 2 * Math.PI;
       if (Math.abs(angle) > 1) {
@@ -23,7 +23,7 @@ export const judgeShape = path => {
 
   if (result.length < 2) {
     return {
-      type: `圆形`,
+      type: CYCLE,
       shapedPath: [...path]
     };
   } else {
