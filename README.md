@@ -12,7 +12,7 @@ click [here](https://sc-painter.netlify.com/) to see live example
 
 ## Features
 
-1. Saving to local (You can restore it next time you open your brower)
+1. Saving to local (You can restore it next time you open your browser)
 2. Simple shapes identification
 
 ## Build Setup
