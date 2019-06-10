@@ -1,5 +1,7 @@
 # Painter
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Kunduin/painter.svg)](https://greenkeeper.io/)
+
 > A simple hand painted board by vue
 
 ## Demo
